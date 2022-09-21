@@ -35,7 +35,6 @@ describe('Testa POST /recommendations/:id/upvote', ()=>{
           });
         const result = await server.post(`/recommendations/${findId.id}/upvote`)
         expect(result.status).toBe(200);
-        expect('').not.toBeNull();
     })
     it('Deve retornar 404 caso vote em uma música inválida', async()=>{
         const result = await server.post(`/recommendations/-1/upvote`)
