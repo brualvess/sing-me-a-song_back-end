@@ -26,3 +26,19 @@ describe('Testa POST /recommendations', ()=>{
         expect(result.status).toBe(422);
     })
 })
+describe('Testa POST /recommendations/:id/upvote', ()=>{
+    it('Deve retornar 200 caso vote em uma música recomendada', async()=>{
+        const datas = await recommendation()
+         await server.post('/recommendations').send(datas);
+         const findId= await prisma.recommendation.findFirst({
+            where: { name: datas.name }
+          });
+        const result = await server.post(`/recommendations/${findId.id}/upvote`)
+        expect(result.status).toBe(200);
+        expect('').not.toBeNull();
+    })
+    it('Deve retornar 404 caso vote em uma música inválida', async()=>{
+        const result = await server.post(`/recommendations/-1/upvote`)
+        expect(result.status).toBe(404);
+    })
+})
