@@ -66,4 +66,8 @@ describe('Testa GET /recommendations/:id', ()=>{
         expect(result.body).not.toBeNull();
         expect(result.body).toBeInstanceOf(Object)
     })
+    it('Deve retornar 404 caso passe um id passe um id inválido', async()=>{
+        const result = await server.post(`/recommendations/-30`)
+        expect(result.status).toBe(404);
+    })
 })
