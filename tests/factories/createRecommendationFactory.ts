@@ -1,4 +1,5 @@
 import {prisma} from '../../src/database'
+import { recommendation } from './recommendationFactory'
 
 export async function createRecommendation(){
     const recommendation = await prisma.recommendation.create({
@@ -8,4 +9,9 @@ export async function createRecommendation(){
         }
     })
     return recommendation
+}
+
+export async function create(){
+const datas = await recommendation()
+await prisma.recommendation.create({data:datas})
 }
