@@ -13,5 +13,6 @@ export async function createRecommendation(){
 
 export async function create(){
 const datas = await recommendation()
-await prisma.recommendation.create({data:datas})
+const recommendation2 = await prisma.recommendation.create({data:datas})
+return recommendation2
 }

@@ -4,7 +4,7 @@ import app from '../src/app'
 import { recommendation } from './factories/recommendationFactory'
 import {
     createRecommendation,
-    create
+    create as createRecommendation2
 } from './factories/createRecommendationFactory'
 
 
@@ -58,9 +58,9 @@ describe('Testa POST /recommendations/:id/downvote', () => {
 })
 
 describe('Testa GET /recommendations', () => {
-    it('Deve retornar status 200 e as últimas 10 recomendações', async()=>{
-        const createRecommendation = await create()
-        for(let i = 0; i < 10; i++ ){
+    it('Deve retornar status 200 e as últimas 10 recomendações', async () => {
+        const createRecommendation = await createRecommendation2()
+        for (let i = 0; i < 10; i++) {
             createRecommendation
         }
         const result = await server.get('/recommendations')
@@ -84,6 +84,26 @@ describe('Testa GET /recommendations/:id', () => {
     })
     it('Deve retornar 404 caso passe um id inválido', async () => {
         const result = await server.get(`/recommendations/-30`)
+        expect(result.status).toBe(404);
+    })
+})
+describe('Testa GET /recommendations/random', () => {
+    it('Pega uma recomendação aleatória', async () => {
+        const recommendation = await createRecommendation()
+        await createRecommendation2()
+        const findId = await prisma.recommendation.findFirst({
+            where: { name: recommendation.name }
+        });
+      
+        for (let i = 0; i < 15; i++) {
+            await server.post(`/recommendations/${findId.id}/upvote`)
+        }
+        const result = await server.get('/recommendations/random')
+        expect(result.status).toBe(200);
+        expect(result.body).not.toBeNull();
+    })
+    it('Caso não exista música cadastrada retornar status 404', async()=>{
+        const result = await server.get('/recommendations/random')
         expect(result.status).toBe(404);
     })
 })
