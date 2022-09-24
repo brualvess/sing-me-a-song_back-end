@@ -6,6 +6,7 @@ import {
     createRecommendation,
     create as createRecommendation2
 } from './factories/createRecommendationFactory'
+import { create } from 'domain';
 
 
 beforeEach(async () => {
@@ -94,7 +95,7 @@ describe('Testa GET /recommendations/random', () => {
         const findId = await prisma.recommendation.findFirst({
             where: { name: recommendation.name }
         });
-      
+
         for (let i = 0; i < 15; i++) {
             await server.post(`/recommendations/${findId.id}/upvote`)
         }
@@ -102,8 +103,29 @@ describe('Testa GET /recommendations/random', () => {
         expect(result.status).toBe(200);
         expect(result.body).not.toBeNull();
     })
-    it('Caso não exista música cadastrada retornar status 404', async()=>{
+    it('Caso não exista música cadastrada retornar status 404', async () => {
         const result = await server.get('/recommendations/random')
         expect(result.status).toBe(404);
+    })
+})
+describe('Testa GET /recommendations/top/:amount', () => {
+    it('Deve retornar 200 e as músicas com maior número de pontos', async () => {
+        const recommendation1 = await createRecommendation()
+        const recommendation2 = await createRecommendation2()
+        const findId1 = await prisma.recommendation.findFirst({
+            where: { name: recommendation1.name }
+        });
+        const findId2 = await prisma.recommendation.findFirst({
+            where: { name: recommendation2.name }
+        });
+        for (let i = 0; i < 550; i++) {
+            await server.post(`/recommendations/${findId1.id}/upvote`)
+        }
+        for (let i = 0; i < 350; i++) {
+            await server.post(`/recommendations/${findId2.id}/upvote`)
+        }
+        const result = await server.get('/recommendations/top/2')
+        expect(result.status).toBe(200);
+        expect(result.body).not.toBeNull();
     })
 })
