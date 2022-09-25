@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "dotenv -e .env.test prisma migrate dev && dotenv -e .env.test prisma db seed && dotenv -e .env.test jest",
+    "test:unit": "dotenv -e .env.test jest -- -i --coverage --testPathPattern=tests/unit",
+    "test:integration": "dotenv -e .env.test jest -- -i --coverage --testPathPattern=tests/integration",
     "dev": "nodemon ./src/server.ts"
   },
   "prisma": {
