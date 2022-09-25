@@ -1,12 +1,9 @@
 import { jest } from '@jest/globals';
 import { recommendationService } from '../../src/services/recommendationsService'
 import { recommendationRepository } from '../../src/repositories/recommendationRepository'
-import {
-  conflictError,
-  notFoundError
-} from "../../src/utils/errorUtils";
+import {notFoundError} from "../../src/utils/errorUtils";
 import { recommendation } from '../factories/recommendationFactory'
-import { randomBytes } from 'crypto';
+
 
 
 
@@ -20,10 +17,10 @@ describe('Testes unitários recommendations service', () => {
     const datas = await recommendation()
 
     jest.spyOn(recommendationRepository, 'findByName').
-      mockImplementationOnce((): any => { })
+      mockImplementationOnce((): any => (null))
 
     jest.spyOn(recommendationRepository, 'create').
-      mockImplementationOnce((): any => { })
+      mockImplementationOnce((): any => (null))
 
     await recommendationService.insert(datas)
 
@@ -67,7 +64,7 @@ describe('Testes unitários recommendations service', () => {
       .mockImplementationOnce((): any => recommendation)
 
     jest.spyOn(recommendationRepository, 'updateScore')
-      .mockImplementationOnce((): any => { })
+      .mockImplementationOnce((): any => (null))
 
 
     await recommendationService.upvote(1)
@@ -88,7 +85,7 @@ describe('Testes unitários recommendations service', () => {
       .mockResolvedValueOnce(null)
 
     jest.spyOn(recommendationRepository, 'updateScore')
-      .mockImplementationOnce((): any => { })
+      .mockImplementationOnce((): any => (null))
 
     await expect(
       recommendationService.upvote(recommendation.id)
@@ -169,7 +166,7 @@ describe('Testes unitários recommendations service', () => {
       .mockResolvedValueOnce(null)
 
     jest.spyOn(recommendationRepository, 'updateScore')
-      .mockImplementationOnce((): any => { })
+      .mockImplementationOnce((): any => (null))
 
     await expect(
       recommendationService.downvote(recommendation.id)
@@ -285,9 +282,9 @@ describe('Testes unitários recommendations service', () => {
     expect(result).toEqual("gt")
   })
 
-  it('Pegar recomendação aleatória', async()=>{
+  it('Pegar recomendação aleatória', async () => {
     jest.spyOn(recommendationRepository, 'findAll')
-    .mockResolvedValue([])
+      .mockResolvedValue([])
 
     jest.spyOn(Math, 'random').mockImplementation(() => {
       return 1
@@ -299,7 +296,7 @@ describe('Testes unitários recommendations service', () => {
 
     expect(recommendationRepository.findAll).toBeCalled()
     expect(Math.random).toBeCalled()
-      
+
   })
 })
 
