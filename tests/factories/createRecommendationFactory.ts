@@ -1,10 +1,11 @@
 import {prisma} from '../../src/database'
 import { recommendation } from './recommendationFactory'
+import { faker } from '@faker-js/faker';
 
 export async function createRecommendation(){
     const recommendation = await prisma.recommendation.create({
         data:{
-            name: "música para meditar",
+            name: faker.lorem.word(10),
             youtubeLink: "https://www.youtube.com/watch?v=nhZyPQzx7JI&t=284s"
         }
     })

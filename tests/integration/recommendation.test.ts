@@ -1,13 +1,11 @@
-import { prisma } from '../src/database'
+import { prisma } from '../../src/database'
 import supertest from 'supertest';
-import app from '../src/app'
-import { recommendation } from './factories/recommendationFactory'
+import app from '../../src/app'
+import { recommendation } from '../factories/recommendationFactory'
 import {
     createRecommendation,
     create as createRecommendation2
-} from './factories/createRecommendationFactory'
-
-
+} from '../factories/createRecommendationFactory'
 
 beforeEach(async () => {
     await prisma.$executeRaw`TRUNCATE TABLE "recommendations"`;
@@ -91,7 +89,6 @@ describe('Testa GET /recommendations/:id', () => {
 describe('Testa GET /recommendations/random', () => {
     it('Pega uma recomendação aleatória', async () => {
         const recommendation = await createRecommendation()
-        await createRecommendation2()
         const findId = await prisma.recommendation.findFirst({
             where: { name: recommendation.name }
         });
