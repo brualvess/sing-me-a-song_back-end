@@ -16,7 +16,7 @@ Tendo todos os módulos previamente testados de maneira unitária, é hora de te
 
 Neste teste é esperado que ao enviar os dados corretos seja criada uma recomendação, retornando status 201
 
-``` json
+``` 
  it('Deve retornar 201 caso insira uma recomendação válida', async () => {
         const datas = await recommendation()
         const result = await server.post('/recommendations').send(datas);
@@ -32,7 +32,7 @@ Neste teste é esperado que ao enviar os dados corretos seja criada uma recomend
 
 Também serão testados alguns casos de erros como por exemplo quando tenta criar uma recomendação sem enviar o nome
 
-``` json
+``` 
 it('Deve retornar 422 caso não informe o nome', async () => {
         const result = await server.post('/recommendations').send({
             youtubeLink: "https://www.youtube.com/watch?v=KaQk6CmzRv0"
@@ -44,7 +44,7 @@ it('Deve retornar 422 caso não informe o nome', async () => {
 
 Para rodar os testes abra o terminal e digite os comandos a seguir:
 
-``` json
+``` 
 $ npm install
 $ npm run test:integration
 ```
